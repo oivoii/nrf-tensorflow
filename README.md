@@ -2,13 +2,13 @@
 Tensorflow on nRF5340
 Use NCS to include [Tensroflow Lite Micro](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro) as a library.
 
-##Operating system
+## Operating system
 As far as I know, Tensorflow Lite Micro is made for use with Linux. 
 
-###Windows
+### Windows
 If you are using Windows, you are mostly on your own. However, [this](https://www.wikihow.com/Install-Ubuntu-on-VirtualBox) might be a good place to begin.
 
-##Install
+## Install
 After you clone this repository you need to load the tensorflow submodule>
 ```
 git submodule init
