@@ -1,0 +1,7 @@
+-- west build: making build dir /home/bruk/ncs/zephyr/samples/application_development/tensorflow_hello_world/build pristine
+-- west build: generating a build system
+-- Application: /home/bruk/ncs/zephyr/samples/application_development/tensorflow_hello_world
+-- Zephyr version: 2.3.0-rc1 (/home/bruk/ncs/zephyr)
+-- Found Python3: /usr/bin/python3.8 (found suitable exact version "3.8.2") found components: Interpreter 
+-- Board: nrf5340pdk_nrf5340_cpuappns
+-- Found west: /home/bruk/.local/bin/west (found suitable version "0.7.2", minimum required is "0.7.1")
