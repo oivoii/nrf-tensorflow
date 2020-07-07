@@ -1,3 +1,6 @@
+Disclaimer: This project is under developement, and can not be promised to be stable or even functional.
+
+
 # nrf-tensorflow
 Tensorflow on nRF5340
 Use NCS to include [Tensroflow Lite Micro](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro) as a library.
