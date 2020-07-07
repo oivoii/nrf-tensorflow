@@ -71,6 +71,9 @@ tensorflow/lite/experimental/microfrontend/lib/window.c \
 tensorflow/lite/experimental/microfrontend/lib/window_util.c \
 $(KISSFFT_LIB_SRCS)
 
+
+MICROLITE_CC_SRCS += $(MICRO_FEATURES_LIB_SRCS)
+
 MICRO_FEATURES_LIB_HDRS := \
 tensorflow/lite/experimental/microfrontend/lib/bits.h \
 tensorflow/lite/experimental/microfrontend/lib/fft.h \

@@ -36,7 +36,6 @@ target_sources(app PRIVATE src/micro_features/no_micro_features_data.cc)
 target_sources(app PRIVATE src/micro_features/yes_micro_features_data.cc)
 
 
-
 zephyr_include_directories(src src/micro_features) 
 
 
@@ -58,6 +57,7 @@ list(GET MCPU_FLAG_LIST 1 MCPU)
 
 set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
+
 
 set(TF_SRC_DIR /home/bruk/git/nrf-tensorflow/tensorflow)
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
@@ -105,7 +105,8 @@ ExternalProject_Add(
   BINARY_DIR ${TF_SRC_DIR} # This particular build system is invoked from the root
   CONFIGURE_COMMAND ""    # Skip configuring the project, e.g. with autoconf
   BUILD_COMMAND
-  ${submake} -f tensorflow/lite/micro/tools/make/Makefile
+  ${submake} -f tensorflow/lite/micro/tools/make/Makefile 
+  MICRO_LITE_EXAMPLE_TESTS=${CMAKE_CURRENT_SOURCE_DIR}/Makefile.inc
   TARGET=${TARGET}
   TARGET_ARCH=${TARGET_ARCH}
   TARGET_TOOLCHAIN_ROOT=${GNUARMEMB_TOOLCHAIN_PATH}/bin/
@@ -116,7 +117,7 @@ ExternalProject_Add(
   AR=${CMAKE_AR}
   CCFLAGS=${external_project_cflags} 
   CXXFLAGS=${external_project_cxxflags} 
-  micro_speech
+  microlite
   INSTALL_COMMAND ""      # This particular build system has no install command
   BUILD_BYPRODUCTS ${TF_LIB_DIR}/libtensorflow-microlite.a
   )

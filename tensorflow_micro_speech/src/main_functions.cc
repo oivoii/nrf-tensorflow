@@ -28,6 +28,7 @@ limitations under the License.
 #include "tensorflow/lite/schema/schema_generated.h"
 #include "tensorflow/lite/version.h"
 
+#include <zephyr.h>
 
 // Globals, used for compatibility with Arduino-style sketches.
 namespace {
@@ -50,6 +51,7 @@ int8_t* model_input_buffer = nullptr;
 
 // The name of this function is important for Arduino compatibility.
 void setup() {
+	printk("STARTING MICRO SPEECH\n");
   // Set up logging. Google style is to avoid globals or statics because of
   // lifetime uncertainty, but since this has a trivial destructor it's okay.
   // NOLINTNEXTLINE(runtime-global-variables)
