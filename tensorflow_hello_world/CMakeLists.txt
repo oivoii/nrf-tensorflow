@@ -36,7 +36,7 @@ set(TARGET_ARCH cortex-m33)
 set(TF_SRC_DIR /home/bruk/git/nrf-tensorflow/tensorflow)
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
 set(TF_LIB_DIR ${TF_MAKE_DIR}/gen/${TARGET}_${TARGET_ARCH}/lib)
-set(extra_project_flags "-mcpu=${TARGET_ARCH} -mthumb -mno-thumb-interwork -mfpu=fpv5-sp-d16") #I had to remove -DTF_LITE_STATIC_MEMORY to make hello_world run. 
+set(extra_project_flags "-mcpu=${TARGET_ARCH} -mthumb -mno-thumb-interwork -mfpu=fpv4-sp-d16") #I had to remove -DTF_LITE_STATIC_MEMORY to make hello_world run. 
 
 zephyr_get_include_directories_for_lang_as_string(       C C_includes)
 zephyr_get_system_include_directories_for_lang_as_string(C C_system_includes)
@@ -90,7 +90,7 @@ ExternalProject_Add(
   AR=${CMAKE_AR}
   CCFLAGS=${external_project_cflags} 
   CXXFLAGS=${external_project_cxxflags} 
-  microlite
+  clean microlite
   INSTALL_COMMAND ""      # This particular build system has no install command
   BUILD_BYPRODUCTS ${TF_LIB_DIR}/libtensorflow-microlite.a
   )
