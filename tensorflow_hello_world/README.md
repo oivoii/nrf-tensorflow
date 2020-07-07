@@ -10,3 +10,7 @@ For now, I was able to fix it by copying the soft-float folder to softfp-float. 
 
 ## nRF52 branch
 This project is mainly intended for the nRF53, so this branch probably will not see very much developement.
+
+## Zephyr
+This example is based on the zephyr/samples/application\_development/external\_lib
+ 
