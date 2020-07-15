@@ -18,10 +18,10 @@ limitations under the License.
 #include <zephyr.h>
 #include <sys/printk.h>
 #include <device.h>
-#include <drivers/pwm.h>
+//#include <drivers/pwm.h>
 
 
-#define PWM_LED0_NODE	DT_ALIAS(pwm_led0)
+/*#define PWM_LED0_NODE	DT_ALIAS(pwm_led0)
 #define FLAGS_OR_ZERO(node)                                                    \
 	COND_CODE_1(DT_PHA_HAS_CELL(node, pwms, flags), (DT_PWMS_FLAGS(node)), \
 		    (0))
@@ -35,31 +35,31 @@ limitations under the License.
 struct device *pwm;
 static u32_t period;
 static u32_t new_period;
-
+*/
 void outputInit()
 {
-	pwm = device_get_binding(PWM_LABEL);
-	if (!pwm) {
+	//pwm = device_get_binding(PWM_LABEL);
+	/*if (!pwm) {
 		printk("Error: didn't find %s device\n", PWM_LABEL);
 		return;
 	}
 
-	period = MIN_PERIOD_USEC;
+	period = MIN_PERIOD_USEC;*/
 }
 
 void HandleOutput(tflite::ErrorReporter *error_reporter, float x_value,
 		  float y_value)
 {
-new_period = (u32_t)((period * (y_value + 1) )/2);
+/*new_period = (u32_t)((period * (y_value + 1) )/2);
     if( new_period >= period){
         new_period = period;
     } 
     
-	
+*/	
 	// Log the current X and Y values
 
-    pwm_pin_set_usec(pwm, PWM_CHANNEL, period, new_period , PWM_FLAGS);
- 	 /* TF_LITE_REPORT_ERROR(error_reporter, "x_value: %f, y_value: %f\n",
+//    pwm_pin_set_usec(pwm, PWM_CHANNEL, period, new_period , PWM_FLAGS);
+ 	  TF_LITE_REPORT_ERROR(error_reporter, "x_value: %f, y_value: %f\n",
 			     static_cast<double>(x_value),
-			     static_cast<double>(y_value));  */ 
+			     static_cast<double>(y_value));  
 }

@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================*/
 
 #include "recognize_commands.h"
-
+#include <zephyr.h>
 #include <limits>
 
 RecognizeCommands::RecognizeCommands(tflite::ErrorReporter* error_reporter,
@@ -35,6 +35,7 @@ RecognizeCommands::RecognizeCommands(tflite::ErrorReporter* error_reporter,
 TfLiteStatus RecognizeCommands::ProcessLatestResults(
     const TfLiteTensor* latest_results, const int32_t current_time_ms,
     const char** found_command, uint8_t* score, bool* is_new_command) {
+  
   if ((latest_results->dims->size != 2) ||
       (latest_results->dims->data[0] != 1) ||
       (latest_results->dims->data[1] != kCategoryCount)) {
@@ -85,6 +86,7 @@ TfLiteStatus RecognizeCommands::ProcessLatestResults(
     *found_command = previous_top_label_;
     *score = 0;
     *is_new_command = false;
+    printk("bailing\n");
     return kTfLiteOk;
   }
 

@@ -31,27 +31,33 @@ limitations under the License.
 #include <zephyr.h>
 
 // Globals, used for compatibility with Arduino-style sketches.
-namespace {
-tflite::ErrorReporter* error_reporter = nullptr;
-const tflite::Model* model = nullptr;
-tflite::MicroInterpreter* interpreter = nullptr;
-TfLiteTensor* model_input = nullptr;
-FeatureProvider* feature_provider = nullptr;
-RecognizeCommands* recognizer = nullptr;
-int32_t previous_time = 0;
+namespace
+{
+  tflite::ErrorReporter *error_reporter = nullptr;
+  const tflite::Model *model = nullptr;
+  tflite::MicroInterpreter *interpreter = nullptr;
+  TfLiteTensor *model_input = nullptr;
+  FeatureProvider *feature_provider = nullptr;
+  RecognizeCommands *recognizer = nullptr;
+  int32_t previous_time = 0;
 
-// Create an area of memory to use for input, output, and intermediate arrays.
-// The size of this will depend on the model you're using, and may need to be
-// determined by experimentation.
-constexpr int kTensorArenaSize = 10 * 1024;
-uint8_t tensor_arena[kTensorArenaSize];
-int8_t feature_buffer[kFeatureElementCount];
-int8_t* model_input_buffer = nullptr;
-}  // namespace
+  // Create an area of memory to use for input, output, and intermediate arrays.
+  // The size of this will depend on the model you're using, and may need to be
+  // determined by experimentation.
+  constexpr int kTensorArenaSize = 10 * 1024;
+  uint8_t tensor_arena[kTensorArenaSize];
+  int8_t feature_buffer[kFeatureElementCount];
+  int8_t *model_input_buffer = nullptr;
+} // namespace
 
 // The name of this function is important for Arduino compatibility.
-void setup() {
-	printk("STARTING MICRO SPEECH\n");
+void setup()
+{
+  printk("STARTING MICRO SPEECH\n");
+
+  get_sound_init();
+  led_init();
+
   // Set up logging. Google style is to avoid globals or statics because of
   // lifetime uncertainty, but since this has a trivial destructor it's okay.
   // NOLINTNEXTLINE(runtime-global-variables)
@@ -61,7 +67,8 @@ void setup() {
   // Map the model into a usable data structure. This doesn't involve any
   // copying or parsing, it's a very lightweight operation.
   model = tflite::GetModel(g_model);
-  if (model->version() != TFLITE_SCHEMA_VERSION) {
+  if (model->version() != TFLITE_SCHEMA_VERSION)
+  {
     TF_LITE_REPORT_ERROR(error_reporter,
                          "Model provided is schema version %d not equal "
                          "to supported version %d.",
@@ -78,16 +85,20 @@ void setup() {
   // tflite::AllOpsResolver resolver;
   // NOLINTNEXTLINE(runtime-global-variables)
   static tflite::MicroMutableOpResolver<4> micro_op_resolver(error_reporter);
-  if (micro_op_resolver.AddDepthwiseConv2D() != kTfLiteOk) {
+  if (micro_op_resolver.AddDepthwiseConv2D() != kTfLiteOk)
+  {
     return;
   }
-  if (micro_op_resolver.AddFullyConnected() != kTfLiteOk) {
+  if (micro_op_resolver.AddFullyConnected() != kTfLiteOk)
+  {
     return;
   }
-  if (micro_op_resolver.AddSoftmax() != kTfLiteOk) {
+  if (micro_op_resolver.AddSoftmax() != kTfLiteOk)
+  {
     return;
   }
-  if (micro_op_resolver.AddReshape() != kTfLiteOk) {
+  if (micro_op_resolver.AddReshape() != kTfLiteOk)
+  {
     return;
   }
 
@@ -98,7 +109,8 @@ void setup() {
 
   // Allocate memory from the tensor_arena for the model's tensors.
   TfLiteStatus allocate_status = interpreter->AllocateTensors();
-  if (allocate_status != kTfLiteOk) {
+  if (allocate_status != kTfLiteOk)
+  {
     TF_LITE_REPORT_ERROR(error_reporter, "AllocateTensors() failed");
     return;
   }
@@ -108,7 +120,8 @@ void setup() {
   if ((model_input->dims->size != 2) || (model_input->dims->data[0] != 1) ||
       (model_input->dims->data[1] !=
        (kFeatureSliceCount * kFeatureSliceSize)) ||
-      (model_input->type != kTfLiteInt8)) {
+      (model_input->type != kTfLiteInt8))
+  {
     TF_LITE_REPORT_ERROR(error_reporter,
                          "Bad input tensor parameters in model");
     return;
@@ -129,48 +142,59 @@ void setup() {
 }
 
 // The name of this function is important for Arduino compatibility.
-void loop() {
+void loop()
+{
+
   // Fetch the spectrogram for the current time.
   const int32_t current_time = LatestAudioTimestamp();
   int how_many_new_slices = 0;
   TfLiteStatus feature_status = feature_provider->PopulateFeatureData(
       error_reporter, previous_time, current_time, &how_many_new_slices);
-  if (feature_status != kTfLiteOk) {
+  if (feature_status != kTfLiteOk)
+  {
     TF_LITE_REPORT_ERROR(error_reporter, "Feature generation failed");
     return;
   }
+
   previous_time = current_time;
   // If no new audio samples have been received since last time, don't bother
   // running the network model.
-  if (how_many_new_slices == 0) {
+  if (how_many_new_slices == 0)
+  {
+    printk("Dont bother running network model\n");
     return;
   }
 
   // Copy feature buffer to input tensor
-  for (int i = 0; i < kFeatureElementCount; i++) {
+  for (int i = 0; i < kFeatureElementCount; i++)
+  {
     model_input_buffer[i] = feature_buffer[i];
   }
 
   // Run the model on the spectrogram input and make sure it succeeds.
   TfLiteStatus invoke_status = interpreter->Invoke();
-  if (invoke_status != kTfLiteOk) {
+  if (invoke_status != kTfLiteOk)
+  {
     TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed");
     return;
   }
 
   // Obtain a pointer to the output tensor
-  TfLiteTensor* output = interpreter->output(0);
+  TfLiteTensor *output = interpreter->output(0);
   // Determine whether a command was recognized based on the output of inference
-  const char* found_command = nullptr;
+  const char *found_command = nullptr;
   uint8_t score = 0;
   bool is_new_command = false;
   TfLiteStatus process_status = recognizer->ProcessLatestResults(
       output, current_time, &found_command, &score, &is_new_command);
-  if (process_status != kTfLiteOk) {
+
+  if (process_status != kTfLiteOk)
+  {
     TF_LITE_REPORT_ERROR(error_reporter,
                          "RecognizeCommands::ProcessLatestResults() failed");
     return;
   }
+
   // Do something based on the recognized command. The default implementation
   // just prints to the error console, but you should replace this with your
   // own function for a real application.
