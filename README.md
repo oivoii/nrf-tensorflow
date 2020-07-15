@@ -25,5 +25,5 @@ You also need to install the [NCS](https://developer.nordicsemi.com/nRF_Connect_
 Oh, and since I can not get CmakeLists.txt to make make downloads external libraries when compilin, you need to manually run:
 ```
 cd [this_git_home]/tensorflow
-make -f tensoflow/lite/micro/tools/make/Makefile third_party_downloads
+make -f tensorflow/lite/micro/tools/make/Makefile third_party_downloads
 ```
