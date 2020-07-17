@@ -33,7 +33,7 @@ list(GET MCPU_FLAG_LIST 1 MCPU)
 set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
 
-set(TF_SRC_DIR /home/bruk/git/nrf-tensorflow/tensorflow)
+set(TF_SRC_DIR ${CMAKE_SOURCE_DIR}/../tensorflow)
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
 set(TF_LIB_DIR ${TF_MAKE_DIR}/gen/${TARGET}_${TARGET_ARCH}/lib)
 set(extra_project_flags "-mcpu=${TARGET_ARCH} -mthumb -mno-thumb-interwork -mfpu=fpv5-sp-d16") #I had to remove -DTF_LITE_STATIC_MEMORY to make hello_world run. 
