@@ -33,7 +33,9 @@ list(GET MCPU_FLAG_LIST 1 MCPU)
 set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
 
-set(TF_SRC_DIR ${CMAKE_SOURCE_DIR}/../tensorflow)
+!!!ERROR!!!!                  # you need to fix the following path before you run the code
+set(TF_SRC_DIR  YOUR_PATH_TO/nrf-tensorflow/tensorflow)
+#set(TF_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../tensorflow)    #Somehow this does not work, and I have no idea why CMAKE does not like the relative path.
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
 set(TF_LIB_DIR ${TF_MAKE_DIR}/gen/${TARGET}_${TARGET_ARCH}/lib)
 set(extra_project_flags "-mcpu=${TARGET_ARCH} -mthumb -mno-thumb-interwork -mfpu=fpv5-sp-d16") #I had to remove -DTF_LITE_STATIC_MEMORY to make hello_world run. 
