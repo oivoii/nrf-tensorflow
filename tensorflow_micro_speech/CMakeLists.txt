@@ -5,7 +5,7 @@ find_package(Zephyr HINTS $ENV{ZEPHYR_BASE})
 project(external_lib)
 
 
-
+target_sources(app PRIVATE src/i2s.cc)
 target_sources(app PRIVATE src/audio_provider.cc)
 #target_sources(app PRIVATE src/audio_provider_mock.cc)
 #target_sources(app PRIVATE src/audio_provider_mock_test.cc)
@@ -59,7 +59,7 @@ set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
 
 
-set(TF_SRC_DIR /home/bruk/git/nrf-tensorflow/tensorflow)
+set(TF_SRC_DIR /home/oivoi/ncs/nrf-tensorflow/tensorflow)
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
 set(TF_LIB_DIR ${TF_MAKE_DIR}/gen/${TARGET}_${TARGET_ARCH}/lib)
 set(extra_project_flags "-mcpu=${TARGET_ARCH} -mthumb -mno-thumb-interwork -mfpu=fpv5-sp-d16 ") #I had to remove -DTF_LITE_STATIC_MEMORY to make hello_world run. 
