@@ -56,12 +56,12 @@ void CaptureSamples() {
   // static int counter_boi = 0;
   // counter_boi++;
   
-  if (capture_index >= 2047 && boi)
+  if (capture_index >= 4095 && boi)
   {
     boi = false;
     for (int i = 0; i < 512; i++)
     {
-      printk("%d, ", g_audio_capture_buffer[i+1536]);
+      printk("%d, ", g_audio_capture_buffer[i+3584]);
     }
     printk("\n\n\n\n");
   }

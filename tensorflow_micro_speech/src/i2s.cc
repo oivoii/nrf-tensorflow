@@ -14,7 +14,6 @@ extern "C" {
 static u32_t m_buffer_rx32u[I2S_DATA_BLOCK_WORDS];
 static s32_t m_buffer_rx32s[I2S_DATA_BLOCK_WORDS];
 static s16_t m_buffer_rx16s[I2S_DATA_BLOCK_WORDS];
-// static s16_t output_buf[I2S_DATA_BLOCK_WORDS];
 static nrfx_i2s_buffers_t initial_buffers;
 static int counter = 0;
 
@@ -83,79 +82,24 @@ void get_sound_init(void (*handler)() )
 }
 void get_sound(void* buffer, size_t size)
 {
-	//memset(&m_buffer_rx32s, 0x00, sizeof(m_buffer_rx32s));
 	s64_t buf_sum = 0;
 	s64_t buf_mean = 0;
 	s64_t words = I2S_DATA_BLOCK_WORDS;
-	//printk("Start\n");
-	
-	//printk("Counter: %d\n", counter);
 
-	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++) {
-		//if (!(i % 100))
-		//{
-		//	printk("\n\n%d\n", m_buffer_rx32u[i]);
-		//}
-		m_buffer_rx32u[i] <<= 8;
-		// if (!(i % 100))
-		// {
-		// 	printk("%d\n", m_buffer_rx32u[i]);
-		// }
+	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++) 
+	{
 		memcpy(m_buffer_rx32s + i,m_buffer_rx32u + i, sizeof(u32_t));
-		// if (!(i % 100))
-		// {
-		// 	printk("%d\n", m_buffer_rx32u[i]);
-		// }
-		m_buffer_rx32s[i] >>= 16;
-		//m_buffer_rx32s[i] >>= 6;
-		//printk("%d, ", m_buffer_rx32s[i]);
+		m_buffer_rx32s[i] >>= 8;
 		buf_sum += m_buffer_rx32s[i];
-
 	}
-	//memset(&m_buffer_rx32u, 0x00, sizeof(m_buffer_rx32u));
 	buf_mean = buf_sum/words;
 	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++) {
 		m_buffer_rx32s[i] -= buf_mean;
-	}
-	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++)
-	{
-		// if (i == 25)
-		// {
-		// 	printk("\n\n16: %d, 32: %d\n", m_buffer_rx16s[i], m_buffer_rx32s[i]);
-		// }
-		//m_buffer_rx32s[i] <<= 14;
-		//m_buffer_rx32s[i] >>= 16;
-		//printk("%d, ", m_buffer_rx32s[i]);
 		memcpy(&m_buffer_rx16s[i],&m_buffer_rx32s[i], sizeof(s16_t));
-		// if (i == 25)
-		// {
-		// 	printk("\n16: %d, 32: %d\n", m_buffer_rx16s[i], m_buffer_rx32s[i]);
-		// }
 	}
-	//printk("\n\n\n\n");
-	memcpy(buffer, m_buffer_rx16s, sizeof(m_buffer_rx16s));
-	
-	//printk("buf_sum: %lld\n", buf_sum);
-	//printk("buf_mean: %lld\n", buf_mean);
-}
 
-// void main()
-// {
-// 	printk("start");
-// 	get_sound_init();
-// 	k_sleep(K_SECONDS(4));
-// 	get_sound(output_buf, I2S_DATA_BLOCK_WORDS);
-// 	k_sleep(K_SECONDS(5));
-// 	get_sound(output_buf, I2S_DATA_BLOCK_WORDS);
-// 	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++) {
-// 		printk("%i, ", m_buffer_rx32s[i]);
-// 		 k_sleep(K_MSEC(16));
-// 	}
-// 	printk("\n\n");
-// 	while (1) {
-// 		k_sleep(K_SECONDS(4));
-// 	}
-// }
+	memcpy(buffer, m_buffer_rx16s, sizeof(m_buffer_rx16s));
+}
 
 #ifdef __cplusplus
 }
