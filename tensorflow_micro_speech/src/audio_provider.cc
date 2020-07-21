@@ -36,7 +36,7 @@ int16_t g_audio_output_buffer[kMaxAudioSampleSize];
 // any samples have arrived yet.
 volatile int32_t g_latest_audio_timestamp = 0;
 }  // namespace
-bool boi = true;
+// bool boi = true;
 void CaptureSamples() {
   // This is how many bytes of new data we have each time this is called
   const int number_of_samples = I2S_DATA_BLOCK_WORDS;
@@ -56,15 +56,15 @@ void CaptureSamples() {
   // static int counter_boi = 0;
   // counter_boi++;
   
-  if (capture_index >= 4095 && boi)
-  {
-    boi = false;
-    for (int i = 0; i < 512; i++)
-    {
-      printk("%d, ", g_audio_capture_buffer[i+3584]);
-    }
-    printk("\n\n\n\n");
-  }
+  // if (capture_index >= 4095 && boi)
+  // {
+  //   boi = false;
+  //   for (int i = 0; i < 512; i++)
+  //   {
+  //     printk("%d, ", g_audio_capture_buffer[i+3584]);
+  //   }
+  //   printk("\n\n\n\n");
+  // }
 }
 
 TfLiteStatus InitAudioRecording(tflite::ErrorReporter* error_reporter) {

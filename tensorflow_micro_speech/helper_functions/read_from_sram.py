@@ -1,6 +1,6 @@
 #This script might be useful to test the I2S driver.
 
-a = 0x200100F4 #Change this address based on where in the ram the sound is saved. In zephyr, something like: printk("%u",&buffer_name);
+a = 0x200108E4 #Change this address based on where in the ram the sound is saved. In zephyr, something like: printk("%u",&buffer_name);
 
 #Remember to download these python libraries
 from pynrfjprog import API 
