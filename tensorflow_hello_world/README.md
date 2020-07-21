@@ -4,3 +4,6 @@ I have tested it on both nrf5340dk and nrf9160dk
 
 ## NCS
 As of v1.3.0, the nRF5340pdk does not have built in PWM support, so if you want to run hello world on that,  you need to add pwm to the Device Tree of nrf5340.
+
+## Manual edits
+For the project to build, in CMakeLists.txt, you need switch YOUR_PATH_TO with your path to the nrf-tensorflow folder. 
