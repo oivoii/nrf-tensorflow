@@ -80,6 +80,23 @@ void get_sound_init(void (*handler)() )
 		printk("I2S Fail: %d", err);
 	}
 }
+void filter_sound(s16_t my_buffer[I2S_DATA_BLOCK_WORDS])
+{
+	// num / den is used to tune the filter
+	s16_t den = 10;   
+	s16_t num = 5;	
+	s16_t filter_input;
+	s16_t current_filter_output = 0;
+	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++)
+	{
+		filter_input = my_buffer[i];
+		current_filter_output = current_filter_output \
+								- (current_filter_output * num / den) \
+								+ filter_input  * num / den;
+		my_buffer[i] = current_filter_output;
+	}
+	return;
+}
 void get_sound(void* buffer, size_t size)
 {
 	s64_t buf_sum = 0;
@@ -97,7 +114,7 @@ void get_sound(void* buffer, size_t size)
 		m_buffer_rx32s[i] -= buf_mean;
 		memcpy(&m_buffer_rx16s[i],&m_buffer_rx32s[i], sizeof(s16_t));
 	}
-
+	filter_sound(m_buffer_rx16s);
 	memcpy(buffer, m_buffer_rx16s, sizeof(m_buffer_rx16s));
 }
 
