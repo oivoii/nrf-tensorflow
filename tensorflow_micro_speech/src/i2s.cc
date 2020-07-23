@@ -80,19 +80,19 @@ void get_sound_init(void (*handler)() )
 		printk("I2S Fail: %d", err);
 	}
 }
-void filter_sound(s16_t my_buffer[I2S_DATA_BLOCK_WORDS])
+void filter_sound(s16_t my_buffer[I2S_DATA_BLOCK_WORDS], s16_t numerator = 1, s16_t denominator = 1)
 {
-	// num / den is used to tune the filter
-	s16_t den = 10;   
-	s16_t num = 5;	
+	if (numerator == denominator){
+		return;
+	}
 	s16_t filter_input;
 	s16_t current_filter_output = 0;
 	for (int i = 0; i < I2S_DATA_BLOCK_WORDS; i++)
 	{
 		filter_input = my_buffer[i];
 		current_filter_output = current_filter_output \
-								- (current_filter_output * num / den) \
-								+ filter_input  * num / den;
+								- (current_filter_output * numerator / denominator) \
+								+ (filter_input  * numerator / denominator);
 		my_buffer[i] = current_filter_output;
 	}
 	return;

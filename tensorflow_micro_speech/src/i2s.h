@@ -21,7 +21,8 @@ extern "C" {
 
 void get_sound_init(void (*handler)() );
 
-void filter_sound(s16_t my_buffer[I2S_DATA_BLOCK_WORDS]);
+/** Low pass filter to eliminate noise. Filter is off with default values.*/
+void filter_sound(s16_t my_buffer[I2S_DATA_BLOCK_WORDS], s16_t numerator, s16_t denominator);
 
 void get_sound(void* buffer, size_t size);
 
