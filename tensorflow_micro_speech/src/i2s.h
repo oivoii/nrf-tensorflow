@@ -13,7 +13,7 @@
 #define I2S_SD_PIN 5
 #define I2S_SCK_PIN 6
 
-#define I2S_DATA_BLOCK_WORDS 512
+#define I2S_DATA_BLOCK_WORDS 2048
 
 #ifdef __cplusplus
 extern "C" {

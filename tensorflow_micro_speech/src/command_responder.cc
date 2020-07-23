@@ -14,15 +14,53 @@ limitations under the License.
 ==============================================================================*/
 
 #include "command_responder.h"
-
+#include <zephyr.h>
+#include <string.h>
+#include <dk_buttons_and_leds.h>
 // The default implementation writes out the name of the recognized command
 // to the error console. Real applications will want to take some custom
 // action instead, and should implement their own versions of this function.
-void RespondToCommand(tflite::ErrorReporter* error_reporter,
-                      int32_t current_time, const char* found_command,
-                      uint8_t score, bool is_new_command) {
-  if (is_new_command) {
-    TF_LITE_REPORT_ERROR(error_reporter, "Heard %s (%d) @%dms", found_command,
-                         score, current_time);
+void RespondToCommand(tflite::ErrorReporter *error_reporter,
+                      int32_t current_time, const char *found_command,
+                      uint8_t score, bool is_new_command)
+{
+
+  if (is_new_command)
+  {
+    // TF_LITE_REPORT_ERROR(error_reporter, "HEARD %s (%d) @%dms", found_command,
+    //                      score, current_time);
+    if (!strcmp(found_command, "yes"))
+    {
+      dk_set_led_on(DK_LED2);
+      dk_set_led_off(DK_LED1);
+      dk_set_led_off(DK_LED3);
+      dk_set_led_off(DK_LED4);
+    }
+    else if (!strcmp(found_command, "no"))
+    {
+      dk_set_led_on(DK_LED3);
+      dk_set_led_off(DK_LED1);
+      dk_set_led_off(DK_LED2);
+      dk_set_led_off(DK_LED4);
+    }
+    else if (!strcmp(found_command, "silence"))
+    {
+      dk_set_led_on(DK_LED4);
+      dk_set_led_off(DK_LED1);
+      dk_set_led_off(DK_LED2);
+      dk_set_led_off(DK_LED3);
+    }
+    else
+    {
+      dk_set_led_on(DK_LED1);
+      dk_set_led_off(DK_LED2);
+      dk_set_led_off(DK_LED3);
+      dk_set_led_off(DK_LED4);
+    }
+  }
+  else
+  {
+    // TF_LITE_REPORT_ERROR(error_reporter, "Heard %s (%d) @%dms", found_command,
+    //                      score, current_time);
   }
 }

@@ -14,10 +14,18 @@ limitations under the License.
 ==============================================================================*/
 
 #include "micro_features/micro_model_settings.h"
+#include <zephyr.h>
 
 const char* kCategoryLabels[kCategoryCount] = {
     "silence",
     "unknown",
     "yes",
     "no",
+};
+
+const int kCategoryLabelsTresholdAdd[kCategoryCount] = {
+    0,
+    100,
+    -10,
+    10,
 };
