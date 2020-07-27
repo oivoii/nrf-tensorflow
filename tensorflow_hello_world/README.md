@@ -16,4 +16,4 @@ This example is based on the zephyr/samples/application\_development/external\_l
  
 ## Build and flash
 To use this example, the same method as explained in this (nRF Connect SDK Tutorial )[https://devzone.nordicsemi.com/nordic/nrf-connect-sdk-guides/b/getting-started/posts/ncs-tutorial---temporary] could be used. 
-TL;DR build and flash: `west build -b [board name here] -p` + `west flash`
+TL;DR build and flash: `west build -b nrf52840dk_nrf52840 -p` + `west flash`
