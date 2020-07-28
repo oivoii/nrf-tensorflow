@@ -14,8 +14,6 @@ target_sources(app PRIVATE src/assert.cc)
 
 zephyr_include_directories(src)
 
-#zephyr_cc_option(-lstdc++)
-
 # The external static library that we are linking with does not know
 # how to build for this platform so we export all the flags used in
 # this zephyr build to the external build system.
@@ -24,11 +22,6 @@ zephyr_include_directories(src)
 # do not need any build information from zephyr. Or they may be
 # incompatible with certain zephyr options and need them to be
 # filtered out.
-
-
-list(GET ZEPHYR_RUNNER_ARGS_jlink 1 MCPU_FLAG ) #Here we assume that '-mcpu' will be the second argument. This might be wrong. 
-string(REPLACE "=" ";" MCPU_FLAG_LIST ${MCPU_FLAG})
-list(GET MCPU_FLAG_LIST 1 MCPU)
 
 set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
@@ -106,12 +99,5 @@ add_dependencies(
   )
 set_target_properties(tf_lib PROPERTIES IMPORTED_LOCATION             ${TF_LIB_DIR}/libtensorflow-microlite.a)
 set_target_properties(tf_lib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${TF_SRC_DIR};${TF_SRC_DIR}/tensorflow/lite/micro;${TF_MAKE_DIR}/downloads/flatbuffers/include") 
-
-#zephyr_include_directories(
-#  ${GNUARMEMB_TOOLCHAIN_PATH}/arm-none-eabi/include/
-#  ${GNUARMEMB_TOOLCHAIN_PATH}/arm-none-eabi/include/c++/9.2.1
-#  ${GNUARMEMB_TOOLCHAIN_PATH}/arm-none-eabi/include/c++/9.2.1/arm-none-eabi
-#)
-
 
 target_link_libraries(app PUBLIC tf_lib)
