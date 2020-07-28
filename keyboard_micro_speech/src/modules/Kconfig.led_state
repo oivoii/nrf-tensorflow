@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2018 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+#
+
+if DESKTOP_LED_ENABLE
+
+menu "LED state"
+
+module = DESKTOP_LED_STATE
+module-str = LED state
+source "subsys/logging/Kconfig.template.log_config"
+
+endmenu
+
+endif

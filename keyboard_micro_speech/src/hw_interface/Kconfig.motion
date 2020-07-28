@@ -1,0 +1,170 @@
+#
+# Copyright (c) 2019 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+#
+
+menu "Motion configuration"
+
+choice
+	prompt "Select motion interface"
+	default DESKTOP_MOTION_NONE
+
+config DESKTOP_MOTION_NONE
+	bool "Disable motion"
+
+config DESKTOP_MOTION_SENSOR_PMW3360_ENABLE
+	bool "Motion from optical sensor PMW3360"
+	select DESKTOP_MOTION_SENSOR_ENABLE
+	depends on PMW3360
+
+config DESKTOP_MOTION_SENSOR_PAW3212_ENABLE
+	bool "Motion from optical sensor PAW3212"
+	select DESKTOP_MOTION_SENSOR_ENABLE
+	depends on PAW3212
+
+config DESKTOP_MOTION_BUTTONS_ENABLE
+	bool "Motion from buttons"
+	depends on !DESKTOP_BUTTONS_NONE
+
+config DESKTOP_MOTION_SIMULATED_ENABLE
+	bool "Simulated motion"
+
+endchoice
+
+config DESKTOP_MOTION_SENSOR_ENABLE
+	bool
+
+config DESKTOP_MOTION_SENSOR_TYPE
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	string
+	default "pmw3360" if DESKTOP_MOTION_SENSOR_PMW3360_ENABLE
+	default "paw3212" if DESKTOP_MOTION_SENSOR_PAW3212_ENABLE
+
+config DESKTOP_MOTION_UP_KEY_ID
+	int "Up key ID"
+	depends on DESKTOP_MOTION_BUTTONS_ENABLE
+	default 0
+	help
+	  ID of key use for generating up motion.
+
+config DESKTOP_MOTION_DOWN_KEY_ID
+	int "Down key ID"
+	depends on DESKTOP_MOTION_BUTTONS_ENABLE
+	default 0
+	help
+	  ID of key use for generating down motion.
+
+config DESKTOP_MOTION_LEFT_KEY_ID
+	int "Left key ID"
+	depends on DESKTOP_MOTION_BUTTONS_ENABLE
+	default 0
+	help
+	  ID of key use for generating left motion.
+
+config DESKTOP_MOTION_RIGHT_KEY_ID
+	int "Right key ID"
+	depends on DESKTOP_MOTION_BUTTONS_ENABLE
+	default 0
+	help
+	  ID of key use for generating right motion.
+
+config DESKTOP_MOTION_SIMULATED_EDGE_TIME
+	int "Time for transition between two points in a trajectory [ms]"
+	depends on DESKTOP_MOTION_SIMULATED_ENABLE
+	range 8 1000000
+	default 16
+	help
+	  Must be power of two (calculations speedup).
+
+config DESKTOP_MOTION_SIMULATED_SCALE_FACTOR
+	int "Scale factor for given shape"
+	depends on DESKTOP_MOTION_SIMULATED_ENABLE
+	range 1 5
+	default 2
+
+config DESKTOP_MOTION_SENSOR_THREAD_STACK_SIZE
+	int "Motion module thread stack size"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	range 0 4096
+	default 512
+	help
+	  Stack size for motion sensor thread.
+
+config DESKTOP_MOTION_SENSOR_EMPTY_SAMPLES_COUNT
+	int "Empty sample count before fetching is stopped"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 10
+	help
+	  Number of sensor readouts with no movement reported after which
+	  module will switch from actively fetching samples to waiting
+	  for an interrupt from the sensor.
+
+config DESKTOP_MOTION_SENSOR_CPI
+	int "Motion sensor default CPI"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+	help
+	  Default CPI value.
+
+config DESKTOP_MOTION_SENSOR_SLEEP1_TIMEOUT_MS
+	int "Motion sensor default sleep 1 timeout in ms"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+	help
+	  Time in milliseconds after last motion detection in which sensor
+	  enters a low power mode 1.
+
+config DESKTOP_MOTION_SENSOR_SLEEP2_TIMEOUT_MS
+	int "Motion sensor default sleep 2 timeout in ms"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+	help
+	  Time in milliseconds after last motion detection in which sensor
+	  enters a low power mode 2.
+
+config DESKTOP_MOTION_SENSOR_SLEEP3_TIMEOUT_MS
+	int "Motion sensor default sleep 3 timeout in ms"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+	help
+	  Time in milliseconds after last motion detection in which sensor
+	  enters a low power mode 3.
+
+config DESKTOP_MOTION_SENSOR_SLEEP1_SAMPLE_TIME_DEFAULT
+	int "Motion sensor default sleep1 sample time"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+
+config DESKTOP_MOTION_SENSOR_SLEEP2_SAMPLE_TIME_DEFAULT
+	int "Motion sensor default sleep2 sample time"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+
+config DESKTOP_MOTION_SENSOR_SLEEP3_SAMPLE_TIME_DEFAULT
+	int "Motion sensor default sleep3 sample time"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default 0
+
+config DESKTOP_MOTION_SENSOR_SLEEP3_SAMPLE_TIME_CONNECTED
+	int "Motion sensor sleep3 sample time when connected"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	default DESKTOP_MOTION_SENSOR_SLEEP3_SAMPLE_TIME_DEFAULT
+
+config DESKTOP_MOTION_SENSOR_SLEEP_DISABLE_ON_USB
+	bool "Disable low power modes if powered from USB"
+	depends on DESKTOP_MOTION_SENSOR_ENABLE
+	depends on DESKTOP_USB_ENABLE
+	depends on !DESKTOP_BATTERY_CHARGER_NONE
+	default y
+	help
+	  Low power modes reduce device power consumption, but increase
+	  response time.
+
+if !DESKTOP_MOTION_NONE
+module = DESKTOP_MOTION
+module-str = motion module
+source "subsys/logging/Kconfig.template.log_config"
+endif
+
+endmenu

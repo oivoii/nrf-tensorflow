@@ -1,0 +1,34 @@
+#
+# Copyright (c) 2018 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+#
+
+menu "HID State"
+
+config DESKTOP_HID_STATE_ENABLE
+	bool "Enable HID state"
+	help
+	  HID events processing module.
+
+if DESKTOP_HID_STATE_ENABLE
+
+config DESKTOP_HID_REPORT_EXPIRATION
+	int "HID report expiration [ms]"
+	default 500
+	help
+	  Define the time after which a HID report expires
+	  and is not sent again.
+
+config DESKTOP_HID_EVENT_QUEUE_SIZE
+	int "HID event queue size"
+	default 12
+	range 2 255
+
+module = DESKTOP_HID_STATE
+module-str = HID state
+source "subsys/logging/Kconfig.template.log_config"
+
+endif
+
+endmenu

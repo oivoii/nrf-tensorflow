@@ -1,0 +1,53 @@
+#
+# Copyright (c) 2019 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-BSD-5-Clause-Nordic
+#
+
+menu "Hotfix set"
+
+config DESKTOP_HFCLK_LOCK_ENABLE
+	bool "Keep HF clock enabled"
+	help
+	  Keeping the HF clock enabled is needed to reduce the latency before
+	  the first packet (in a row) is transmitted over the BLE.
+	  If disabled a startup delay of around 1.5 ms will be added to
+	  overall latency of the first packet.
+	  If enabled current consumption is increased.
+
+config DESKTOP_CONSTLAT_ENABLE
+	bool "Constant latency interrupts"
+	help
+	  When enabled SoC will use configuration for constant latency
+	  interrupts. This reduces interrupt propagation time but increases
+	  power consumption.
+
+config DESKTOP_CONSTLAT_DISABLE_ON_STANDBY
+	bool "Disable constant latency interrupts on standby"
+	depends on DESKTOP_CONSTLAT_ENABLE
+	help
+	  When enabled constant latency interrupts will be disabled when
+	  the devices switches to standby.
+
+config DESKTOP_BLE_TX_PWR
+	int
+	default 8 if BT_CTLR_TX_PWR_PLUS_8
+	default 7 if BT_CTLR_TX_PWR_PLUS_7
+	default 6 if BT_CTLR_TX_PWR_PLUS_6
+	default 5 if BT_CTLR_TX_PWR_PLUS_5
+	default 4 if BT_CTLR_TX_PWR_PLUS_4
+	default 3 if BT_CTLR_TX_PWR_PLUS_3
+	default 2 if BT_CTLR_TX_PWR_PLUS_2
+	default 0 if BT_CTLR_TX_PWR_0
+	default -4 if BT_CTLR_TX_PWR_MINUS_4
+	default -8 if BT_CTLR_TX_PWR_MINUS_8
+	default -12 if BT_CTLR_TX_PWR_MINUS_12
+	default -16 if BT_CTLR_TX_PWR_MINUS_16
+	default -20 if BT_CTLR_TX_PWR_MINUS_20
+	default -30 if BT_CTLR_TX_PWR_MINUS_30
+	default -40 if BT_CTLR_TX_PWR_MINUS_40
+	help
+	  For nrfxlib LL TX power has to be set using HCI commands.
+	  Zephyr Kconfig options are ignored.
+
+endmenu
