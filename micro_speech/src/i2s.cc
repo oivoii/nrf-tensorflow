@@ -115,7 +115,12 @@ void get_sound(void* buffer, size_t size)
 		memcpy(&m_buffer_rx16s[i],&m_buffer_rx32s[i], sizeof(s16_t));
 	}
 	filter_sound(m_buffer_rx16s);
-	memcpy(buffer, m_buffer_rx16s, sizeof(m_buffer_rx16s));
+	static int counterrr = 0;
+	if (counterrr < 32)
+	{
+		memcpy(buffer, m_buffer_rx16s, sizeof(m_buffer_rx16s));
+		counterrr++;
+	}
 }
 
 #ifdef __cplusplus

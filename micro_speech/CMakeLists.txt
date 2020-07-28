@@ -6,6 +6,7 @@ project(external_lib)
 
 
 target_sources(app PRIVATE src/i2s.cc)
+target_sources(app PRIVATE src/send_to_net.c)
 target_sources(app PRIVATE src/audio_provider.cc)
 #target_sources(app PRIVATE src/audio_provider_mock.cc)
 #target_sources(app PRIVATE src/audio_provider_mock_test.cc)
@@ -59,8 +60,8 @@ set(TARGET ${BOARD})
 set(TARGET_ARCH cortex-m33)
 
 
-!!!ERROR!!!!                  # you need to fix the following path before you run the code
-set(TF_SRC_DIR  YOUR_PATH_TO/nrf-tensorflow/tensorflow)
+# you need to fix the following path before you run the code
+set(TF_SRC_DIR  /home/oivoi/ncs/nrf-tensorflow/tensorflow)
 #set(TF_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../tensorflow)    #Somehow this does not work, and I have no idea why CMAKE does not like the relative path.
 set(TF_MAKE_DIR ${TF_SRC_DIR}/tensorflow/lite/micro/tools/make)
 set(TF_LIB_DIR ${TF_MAKE_DIR}/gen/${TARGET}_${TARGET_ARCH}/lib)

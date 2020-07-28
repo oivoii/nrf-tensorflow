@@ -17,6 +17,7 @@ limitations under the License.
 #include <zephyr.h>
 #include <string.h>
 #include <dk_buttons_and_leds.h>
+#include "send_to_net.h"
 // The default implementation writes out the name of the recognized command
 // to the error console. Real applications will want to take some custom
 // action instead, and should implement their own versions of this function.
@@ -35,6 +36,7 @@ void RespondToCommand(tflite::ErrorReporter *error_reporter,
       dk_set_led_off(DK_LED1);
       dk_set_led_off(DK_LED3);
       dk_set_led_off(DK_LED4);
+		  send_yes();
     }
     else if (!strcmp(found_command, "no"))
     {
@@ -42,6 +44,7 @@ void RespondToCommand(tflite::ErrorReporter *error_reporter,
       dk_set_led_off(DK_LED1);
       dk_set_led_off(DK_LED2);
       dk_set_led_off(DK_LED4);
+      send_no();
     }
     else if (!strcmp(found_command, "silence"))
     {
