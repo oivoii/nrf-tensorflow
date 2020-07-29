@@ -9,5 +9,9 @@ To use this example, the same method as explained in this [nRF Connect SDK Tutor
 TL;DR build and flash: `west build -b nrf5340pdk_nrf5340_cpuapp -p` + `west flash`
 
 ## Versions
-NCS v1.3.0
-Tested on nRF5340PDK 0.8.0 and nRF9160DK 0.8.5
+NCS v1.3.0.
+Tested on nRF5340PDK 0.8.0, nRF9160DK 0.8.5 and nRF52840DK 2.0.0.
+
+## nRF52840DK
+nRF52840 has a Cortex-m4 instead of Cortex-m33. Because of this, you need to change TARGET_ARCH in CMakeLists.txt. 
+When building, we get an error saying that "ncs/nrfxlib/crypto/nrf_cc310_platform/lib/cortex-m4/softfp-float does not exist". This can be fixed by copying the soft-float folder to softfp-float. This have to be done manually. 
