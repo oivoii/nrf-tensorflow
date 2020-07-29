@@ -7,3 +7,7 @@ For the project to build, in CMakeLists.txt, you need switch YOUR_PATH_TO with y
 ## Build and flash
 To use this example, the same method as explained in this [nRF Connect SDK Tutorial](https://devzone.nordicsemi.com/nordic/nrf-connect-sdk-guides/b/getting-started/posts/ncs-tutorial---temporary) could be used. 
 TL;DR build and flash: `west build -b nrf5340pdk_nrf5340_cpuapp -p` + `west flash`
+
+## Versions
+NCS v1.3.0
+Tested on nRF5340PDK 0.8.0 and nRF9160DK 0.8.5
