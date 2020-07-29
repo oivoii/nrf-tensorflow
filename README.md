@@ -2,7 +2,7 @@ Disclaimer: This project is under developement, and can not be promised to be st
 
 
 # nrf-tensorflow
-Tensorflow on nRF5340
+Tensorflow on nRF with NCS
 Use NCS to include [Tensroflow Lite Micro](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro) as a library.
 
 ## Operating system
@@ -27,3 +27,7 @@ Oh, and since I can not get CmakeLists.txt to make make downloads external libra
 cd [this_git_home]/tensorflow
 make -f tensorflow/lite/micro/tools/make/Makefile third_party_downloads
 ```
+
+## Versions
+NCS v1.3.0
+Tested on nRF5340PDK 0.8.0 and nRF9160DK 0.8.5
