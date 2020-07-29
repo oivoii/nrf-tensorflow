@@ -1,9 +1,9 @@
-Disclaimer: This project is under developement, and can not be promised to be stable or even functional.
+Disclaimer: This project is under development, and can not be promised to be stable or even functional.
 
 
 # nrf-tensorflow
 Tensorflow on nRF with NCS
-Use NCS to include [Tensroflow Lite Micro](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro) as a library.
+Use NCS to include [Tensorflow Lite Micro](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/micro) as a library.
 
 ## Operating system
 As far as I know, Tensorflow Lite Micro is made for use with Linux. 
