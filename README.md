@@ -27,7 +27,3 @@ Oh, and since I can not get CmakeLists.txt to make make downloads external libra
 cd [this_git_home]/tensorflow
 make -f tensorflow/lite/micro/tools/make/Makefile third_party_downloads
 ```
-
-## Versions
-NCS v1.3.0
-Tested on nRF5340PDK 0.8.0 and nRF9160DK 0.8.5
